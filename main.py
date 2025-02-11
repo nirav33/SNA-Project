@@ -41,6 +41,6 @@ def fetch_citation_data(scholar_ids, output_file):
     print(f"Data saved to {output_file}")
 
 # Example usage
-scholar_ids = ["YOUR_GOOGLE_SCHOLAR_ID1", "YOUR_GOOGLE_SCHOLAR_ID2"]  # Replace with actual IDs
+scholar_ids = ["Sk-JV9QAAAAJ", "5MD_e_wAAAAJ"]  # Replace with actual IDs
 output_file = "google_scholar_data.csv"
 fetch_citation_data(scholar_ids, output_file)
