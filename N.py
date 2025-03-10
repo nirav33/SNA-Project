@@ -148,6 +148,36 @@ def print_shared_connections(G):
             print(f"\n{prof1} and {prof2} share {len(shared)} coauthor(s):")
             for coauthor in shared:
                 print(f"  - {coauthor}")
+                
+def analyze_network_statistics(G, professor_name):
+    """Analyze network statistics for centrality and connectivity."""
+    degree_centrality = nx.degree_centrality(G)
+    closeness_centrality = nx.closeness_centrality(G)
+    betweenness_centrality = nx.betweenness_centrality(G)
+    eigenvector_centrality = nx.eigenvector_centrality(G, max_iter=1000, tol=1e-6)
+
+    print(f"\nStatistical Measures for {professor_name}")
+    print(f"Degree Centrality: {degree_centrality}")
+    print(f"Closeness Centrality: {closeness_centrality}")
+    print(f"Betweenness Centrality: {betweenness_centrality}")
+    print(f"Eigenvector Centrality: {eigenvector_centrality}")
+
+    # Plotting with adjusted bar width
+    plt.figure(figsize=(12, 6))
+    x = range(len(degree_centrality))
+    
+    plt.bar(x, degree_centrality.values(), color='blue', label='Degree Centrality', width=0.2)
+    plt.bar(x, closeness_centrality.values(), color='green', label='Closeness Centrality', width=0.2)
+    plt.bar(x, betweenness_centrality.values(), color='red', label='Betweenness Centrality', width=0.2)
+    plt.bar(x, eigenvector_centrality.values(), color='purple', label='Eigenvector Centrality', width=0.2)
+    
+    plt.xticks(x, list(degree_centrality.keys()), rotation=45, ha='right')
+    plt.legend()
+    plt.title(f'Graph-Based Statistical Measures - {professor_name}')
+    plt.tight_layout()
+    plt.savefig(f"statistics_{professor_name.replace(' ', '_')}.png")
+    plt.close()
+
 
 def main():
     # List of Google Scholar IDs (Replace with actual IDs)
@@ -157,18 +187,32 @@ def main():
     profiles = [extract_scholar_profile(scholar_id) for scholar_id in scholar_ids]
     
     # Generate and save individual networks
-    print("Generating individual networks...")
+    # print("Generating individual networks...")
+    # for profile in profiles:
+    #     if profile:
+    #         G = create_individual_network(profile)
+    #         visualize_individual_network(G, profile["name"])
+    #         print(f"Created network for {profile['name']}")
+    
+    # # Generate and save shared connections network
+    # print("\nAnalyzing shared connections...")
+    # shared_G = find_shared_connections(profiles)
+    # visualize_shared_network(shared_G)
+    # print_shared_connections(shared_G)
+    
     for profile in profiles:
         if profile:
             G = create_individual_network(profile)
             visualize_individual_network(G, profile["name"])
+            analyze_network_statistics(G, profile["name"])
             print(f"Created network for {profile['name']}")
-    
+
     # Generate and save shared connections network
     print("\nAnalyzing shared connections...")
     shared_G = find_shared_connections(profiles)
     visualize_shared_network(shared_G)
     print_shared_connections(shared_G)
+
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"group": "professor", "id": "Dharmender Singh Kushwaha", "label": "Dharmender Singh Kushwaha", "shape": "dot", "size": 25, "title": "Dharmender Singh Kushwaha\nMNNIT Allahabad"}, {"group": "coauthor", "id": "SHAKTI MISHRA", "label": "SHAKTI MISHRA", "shape": "dot", "size": 15, "title": "SHAKTI MISHRA"}, {"group": "coauthor", "id": "Dr. Amrendra Singh Yadav", "label": "Dr. Amrendra Singh Yadav", "shape": "dot", "size": 15, "title": "Dr. Amrendra Singh Yadav"}, {"group": "coauthor", "id": "manu vardhan", "label": "manu vardhan", "shape": "dot", "size": 15, "title": "manu vardhan"}, {"group": "coauthor", "id": "Ashish Sharma", "label": "Ashish Sharma", "shape": "dot", "size": 15, "title": "Ashish Sharma"}, {"group": "coauthor", "id": "Rohit K Sachan", "label": "Rohit K Sachan", "shape": "dot", "size": 15, "title": "Rohit K Sachan"}, {"group": "coauthor", "id": "Dr. Tarun Kumar", "label": "Dr. Tarun Kumar", "shape": "dot", "size": 15, "title": "Dr. Tarun Kumar"}, {"group": "coauthor", "id": "Dushyant Kumar Singh", "label": "Dushyant Kumar Singh", "shape": "dot", "size": 15, "title": "Dushyant Kumar Singh"}, {"group": "coauthor", "id": "Sanjeev Pippal", "label": "Sanjeev Pippal", "shape": "dot", "size": 15, "title": "Sanjeev Pippal"}, {"group": "coauthor", "id": "Eva Patel", "label": "Eva Patel", "shape": "dot", "size": 15, "title": "Eva Patel"}, {"group": "coauthor", "id": "Aprna Tripathi", "label": "Aprna Tripathi", "shape": "dot", "size": 15, "title": "Aprna Tripathi"}, {"group": "coauthor", "id": "Nikita Singh", "label": "Nikita Singh", "shape": "dot", "size": 15, "title": "Nikita Singh"}, {"group": "coauthor", "id": "Dr Avinash Gupta", "label": "Dr Avinash Gupta", "shape": "dot", "size": 15, "title": "Dr Avinash Gupta"}, {"group": "coauthor", "id": "Himanshu Gahlot", "label": "Himanshu Gahlot", "shape": "dot", "size": 15, "title": "Himanshu Gahlot"}, {"group": "coauthor", "id": "Biru Rajak", "label": "Biru Rajak", "shape": "dot", "size": 15, "title": "Biru Rajak"}, {"group": "coauthor", "id": "Divya  Kumar", "label": "Divya  Kumar", "shape": "dot", "size": 15, "title": "Divya  Kumar"}, {"group": "coauthor", "id": "Dhirendra Kumar shukla", "label": "Dhirendra Kumar shukla", "shape": "dot", "size": 15, "title": "Dhirendra Kumar shukla"}, {"group": "coauthor", "id": "Ravindra Kumar Singh", "label": "Ravindra Kumar Singh", "shape": "dot", "size": 15, "title": "Ravindra Kumar Singh"}, {"group": "coauthor", "id": "Anurag Mishra", "label": "Anurag Mishra", "shape": "dot", "size": 15, "title": "Anurag Mishra"}, {"group": "coauthor", "id": "Alok Mathur", "label": "Alok Mathur", "shape": "dot", "size": 15, "title": "Alok Mathur"}]);
+                  edges = new vis.DataSet([{"from": "Dharmender Singh Kushwaha", "to": "SHAKTI MISHRA"}, {"from": "Dharmender Singh Kushwaha", "to": "Dr. Amrendra Singh Yadav"}, {"from": "Dharmender Singh Kushwaha", "to": "manu vardhan"}, {"from": "Dharmender Singh Kushwaha", "to": "Ashish Sharma"}, {"from": "Dharmender Singh Kushwaha", "to": "Rohit K Sachan"}, {"from": "Dharmender Singh Kushwaha", "to": "Dr. Tarun Kumar"}, {"from": "Dharmender Singh Kushwaha", "to": "Dushyant Kumar Singh"}, {"from": "Dharmender Singh Kushwaha", "to": "Sanjeev Pippal"}, {"from": "Dharmender Singh Kushwaha", "to": "Eva Patel"}, {"from": "Dharmender Singh Kushwaha", "to": "Aprna Tripathi"}, {"from": "Dharmender Singh Kushwaha", "to": "Nikita Singh"}, {"from": "Dharmender Singh Kushwaha", "to": "Dr Avinash Gupta"}, {"from": "Dharmender Singh Kushwaha", "to": "Himanshu Gahlot"}, {"from": "Dharmender Singh Kushwaha", "to": "Biru Rajak"}, {"from": "Dharmender Singh Kushwaha", "to": "Divya  Kumar"}, {"from": "Dharmender Singh Kushwaha", "to": "Dhirendra Kumar shukla"}, {"from": "Dharmender Singh Kushwaha", "to": "Ravindra Kumar Singh"}, {"from": "Dharmender Singh Kushwaha", "to": "Anurag Mishra"}, {"from": "Dharmender Singh Kushwaha", "to": "Alok Mathur"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.3,
+            "damping": 0.09,
+            "gravitationalConstant": -80000,
+            "springConstant": 0.05,
+            "springLength": 200
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
